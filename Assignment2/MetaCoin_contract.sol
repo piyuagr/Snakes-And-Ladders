@@ -64,7 +64,7 @@ contract Loan is MetaCoin {
         // A good way to prevent overflows will be to typecast principle, rate and the big number divider suggested in the above blogs as uint256 variables, just use uint256 R = rate;
         
         unit256 R = rate;
-        for( uint period = 0 ; period < time ; period++ ) principal = add (principal, mulDiv ( rate, principal, 100));
+        for( uint yr = 0 ; yr < time ; yr++ ) principal = add (principal, mul( rate, principal)/100 );
         return principle;
         
     }
