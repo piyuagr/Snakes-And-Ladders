@@ -1,7 +1,7 @@
 
 1. getCompoundInterest : allows anyone to use it to calculate the amount of interest for given values of P, R, T (in years). Remember that solidity does not have a good support for floats though, so enter the rate as a whole number (like if the rate is 83%, enter 83). We are looking for an iterative implementation to calculate the Compound Interest, which is compounded annually, to test if you understood the applications of loops. This is an inefficient method though, and we'll come back to that later, but we want it to be iterative. A few blogs to clue you in to how to perform percentage based calculations with just integers have been provided in the template.
 
-2. reqLoan: anyone should be able to use it to request the Owner to settle his loan. The P, R, T entered is used to calculate the dues, and is added to a mapping. It should emit the Request event.
+2. reqLoan function can bre used by anyone to request the Owner to settle his loan. The P, R, T entered is used to calculate the dues, and is added to a mapping. The function emits the Request event too.
 
 3. getOwnerBalance: anyone can use it to get the amount of MetaCoins owned by the owner. make use of MetaCoin contract's getBalance to implement this, to get a taste of inheritance!
 
