@@ -43,7 +43,7 @@ contract Loan is MetaCoin {
     modifier isOwner() {
         // Implement a modifier to allow only the owner of the contract to use specific functions
         
-        require(msg.sender == owner, "Caller is not owner");
+        require(msg.sender == Owner, "Caller is not owner");
         _;
         
     }
@@ -63,8 +63,12 @@ contract Loan is MetaCoin {
         // https://medium.com/coinmonks/math-in-solidity-part-3-percents-and-proportions-4db014e080b1 just read the towards full proportion part.
         // A good way to prevent overflows will be to typecast principle, rate and the big number divider suggested in the above blogs as uint256 variables, just use uint256 R = rate;
         
-        unit256 R = rate;
-        for( uint yr = 0 ; yr < time ; yr++ ) principal = add (principal, mul( rate, principal)/100 );
+        uint256 R = rate;
+        for( uint yr = 0 ; yr < time ; yr++ ){
+            uint256 temp = R*principle;
+            temp = temp/100;
+            principle = principle + temp;
+        }
         return principle;
         
     }
@@ -82,31 +86,32 @@ contract Loan is MetaCoin {
     }
     
     function getOwnerBalance() public view returns(uint256) {
-				// use the getBalance function of MetaCoin contract to view the Balance of the contract Owner.
-				// hint: how do you access the functions / variables of the parent class in your favorite programming language? It is similar to that in solidity as well!
+		// use the getBalance function of MetaCoin contract to view the Balance of the contract Owner.
+		// hint: how do you access the functions / variables of the parent class in your favorite programming language? It is similar to that in solidity as well!
 				
-				return getBalance(Owner);
+		return getBalance(Owner);
 				
-		}
+	}
     
     // implement viewDues and settleDues which allow *ONLY* the owner to *view* and *settle* his loans respectively. They take in the address of a creditor as arguments. viewDues returns a uint256 corresponding to the due amount, and does not modify any state variables. settleDues returns a bool, true if the dues were settled and false otherwise. Remember to set the the pending loan to 0 after settling the dues.
     // use sendCoin function of MetaCoin contract to send the coins required for settling the dues.
     
-    function viewDues() public isOwner returns(uint256){
+    function viewDues( address addr) public isOwner returns(uint256){
         
         return loans[addr];
         
     }
     
-    function settleDues() public isOwner returns(bool correct) {
+    function settleDues( address addr) public isOwner returns(bool correct) {
         
-        if( loans[addr] == 0 ){
-		return true;
-	} else {
+        if( sendCoin( addr, loans[addr], msg.sender) ){
             loans[addr] = 0;
+            return true;
+        } else {
             return false;
         }
         
     }
     
 }
+
