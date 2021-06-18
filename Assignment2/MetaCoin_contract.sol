@@ -94,13 +94,18 @@ contract Loan is MetaCoin {
     
     function viewDues() public isOwner returns(uint256){
         
-        return ;
+        return loans[addr];
         
     }
     
-    function settleDues() public isOwner returns(bool ) {
+    function settleDues() public isOwner returns(bool correct) {
         
-        return ;
+        if( loans[addr] == 0 ){
+		return true;
+	} else {
+            loans[addr] = 0;
+            return false;
+        }
         
     }
     
