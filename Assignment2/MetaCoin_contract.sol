@@ -81,6 +81,7 @@ contract Loan is MetaCoin {
         
         if( toPay < principle ) return false;
         loans[msg.sender] = toPay;
+	emit Request( msg.sender, principle, rate, time, toPay);
         return true;
         
     }
